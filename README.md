@@ -1,2 +1,2 @@
 # Nitro-Sniper
-snipes you gay nitro lol 
+If you don't know how to set it up use the Build.rar

@@ -34,5 +34,4 @@ local Find = sfind(slower(Content),"discord.gift/")
     end
 end)
 
-
 Client:run(Token)

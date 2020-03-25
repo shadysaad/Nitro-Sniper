@@ -3,9 +3,23 @@ local Client = Discordia.Client()
 local Http = require'coro-http'
 local sfind,slower,ssub = string.find,string.lower,string.sub
 local request = Http.request 
+function writefile(File,...)
+    local File = io.open(File,"w")
+    File:write(...)
+    if File then -- error handling in edge-cases
+        File:close()
+    end
+end
 
-local Token = args[2] or "" -- Token goes in the string or as a 2nd argument 
-if not Token or Token == "" then error'You need to put your token as a second argument or put it in the string.' end
+function readfile(File)
+    local File = io.open(File,"r")
+    if File then 
+        local Contents = File:read()
+        File:close()
+        return Contents
+    end 
+end 
+if not readfile("Token.txt") then writefile("Token.txt") end
 
 local function testnitro(Code)
     local Head,Body = request("GET","https://ptb.discordapp.com/api/v6/entitlements/gift-codes/"..Code,{{"Authorization",Token}})
@@ -23,15 +37,16 @@ local Find = sfind(slower(Content),"discord.gift/")
     if Find then
     local Gift = ssub(Content,Find + 13)
         if #Gift == 16 and testnitro(ssub(Gift,1,16)) then 
-            if redeemcode(ssub(Gift,1,24)) == 200 then  -- lol just a check 
+            if redeemcode(ssub(Gift,1,16)) == 200 then  -- a simple check
                 print('Claimed '..ssub(Gift,1,24)..' from '..Message.author.tag)
            end
         elseif #Gift == 24 and testnitro(ssub(Gift,1,24)) then 
-           if redeemcode(ssub(Gift,1,24)) == 200 then  -- lol just a check 
+           if redeemcode(ssub(Gift,1,24)) == 200 then  -- a simple check
                 print('Claimed '..ssub(Gift,1,24)..' from '..Message.author.tag)
            end
         end
     end
 end)
 
-Client:run(Token)
+if not readfile("Token.txt") and not args[2] then error'You need to put your token as a second argument or put it in the Token.txt file.' end
+Client:run(readfile("Token.txt") or args[2])

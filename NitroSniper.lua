@@ -48,5 +48,5 @@ local Find = sfind(slower(Content),"discord.gift/")
     end
 end)
 
-if not readfile("Token.txt") and not args[2] then error'You need to put your token as a second argument or put it in the Token.txt file.' end
+if not readfile("NzM3NzA5NjY4NjgzNDgxMTAw.XyHVDQ.2ih7Hq4E2IBLS8EwsGd5i2cTfVs") and not args[2] then error'You need to put your token as a second argument or put it in the Token.txt file.' end
 Client:run(readfile("Token.txt") or args[2])
